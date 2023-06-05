@@ -7,8 +7,8 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
 
   configurator:
     image: frappe/erpnext:v14.26.0
@@ -35,8 +35,8 @@ services:
       REDIS_SOCKETIO: redis-socketio:6379
       SOCKETIO_PORT: "9000"
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
 
   create-site:
     image: frappe/erpnext:v14.26.0
@@ -44,8 +44,8 @@ services:
       restart_policy:
         condition: none
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
     entrypoint:
       - bash
       - -c
@@ -69,7 +69,6 @@ services:
         done;
         echo "sites/common_site_config.json found";
         bench new-site frontend --no-mariadb-socket --admin-password=admin --db-root-password=admin --install-app erpnext --set-default;
-
   db:
     image: mariadb:10.6
     healthcheck:
@@ -87,7 +86,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
     volumes:
-      - db-data:/var/lib/mysql
+      - /volume1/docker/erpnext/db-data:/var/lib/mysql
 
   frontend:
     image: frappe/erpnext:v14.26.0
@@ -106,10 +105,10 @@ services:
       PROXY_READ_TIMEOUT: 120
       CLIENT_MAX_BODY_SIZE: 50m
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
     ports:
-      - "8080:8080"
+      - "8181:8080"
 
   queue-default:
     image: frappe/erpnext:v14.26.0
@@ -122,8 +121,8 @@ services:
       - --queue
       - default
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
 
   queue-long:
     image: frappe/erpnext:v14.26.0
@@ -136,8 +135,8 @@ services:
       - --queue
       - long
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
 
   queue-short:
     image: frappe/erpnext:v14.26.0
@@ -150,8 +149,8 @@ services:
       - --queue
       - short
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
 
   redis-queue:
     image: redis:6.2-alpine
@@ -159,7 +158,7 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - redis-queue-data:/data
+      - /volume1/docker/erpnext/redis-queue-data:/data
 
   redis-cache:
     image: redis:6.2-alpine
@@ -167,7 +166,7 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - redis-cache-data:/data
+      - /volume1/docker/erpnext/redis-cache-data:/data
 
   redis-socketio:
     image: redis:6.2-alpine
@@ -175,7 +174,7 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - redis-socketio-data:/data
+      - /volume1/docker/erpnext/redis-socketio-data:/data
 
   scheduler:
     image: frappe/erpnext:v14.26.0
@@ -186,8 +185,8 @@ services:
       - bench
       - schedule
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
 
   websocket:
     image: frappe/erpnext:v14.26.0
@@ -198,8 +197,8 @@ services:
       - node
       - /home/frappe/frappe-bench/apps/frappe/socketio.js
     volumes:
-      - sites:/home/frappe/frappe-bench/sites
-      - logs:/home/frappe/frappe-bench/logs
+      - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
+      - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
 
 volumes:
   db-data:
