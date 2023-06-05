@@ -14,7 +14,7 @@ services:
     image: frappe/erpnext:v14.26.0
     deploy:
       restart_policy:
-        condition: any
+        condition: none
     entrypoint:
       - bash
       - -c
@@ -42,7 +42,7 @@ services:
     image: frappe/erpnext:v14.26.0
     deploy:
       restart_policy:
-        condition: none
+        condition: any
     volumes:
       - /volume1/docker/erpnext/sites:/home/frappe/frappe-bench/sites
       - /volume1/docker/erpnext/logs:/home/frappe/frappe-bench/logs
